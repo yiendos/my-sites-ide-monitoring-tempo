@@ -1,0 +1,16 @@
+
+# Service graphs and span metrics, written to Prometheus - only when the prometheus plugin is installed
+metrics_generator:
+  registry:
+    external_labels:
+      source: tempo
+  storage:
+    path: /storage/generator/wal
+    remote_write:
+      - url: http://prometheus:9090/api/v1/write
+        send_exemplars: true
+
+overrides:
+  defaults:
+    metrics_generator:
+      processors: [service-graphs, span-metrics]
