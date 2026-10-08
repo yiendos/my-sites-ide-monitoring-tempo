@@ -1,0 +1,26 @@
+services:
+    tempo:
+        image: ${NAMESPACE}_tempo:latest
+        build:
+            context: .
+            dockerfile: Dockerfile
+        # monolithic mode (-target=all, no Kafka), with the config monitoring:tempo-start writes into
+        # storage/plugins/tempo/ ("storage": true in composer.json mounts it at /storage)
+        command: ["-target=all", "-config.file=/storage/conf/tempo.yaml"]
+        # no host ports - inside the IDE, OTLP comes in on tempo:4317 (gRPC) / tempo:4318 (HTTP),
+        # usually via Alloy, and Grafana queries tempo:3200
+        labels:
+            # scraped by the prometheus plugin, when it's installed
+            prometheus.io/scrape: "true"
+            prometheus.io/port: "3200"
+        # Docker's own copy of the container's output, capped (json-file only rotates by size) - the
+        # searchable history is in Loki, for its retention
+        logging:
+            driver: json-file
+            options:
+                max-size: "10m"
+                max-file: "3"
+        networks:
+            - my-sites-ide
+
+    # opt-in: run monitoring:tempo-start (it writes the config first), or add tempo to APP

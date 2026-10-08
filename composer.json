@@ -1,0 +1,32 @@
+{
+    "name": "yiendos/my-sites-ide-monitoring-tempo",
+    "description": "Tempo distributed tracing for my-sites-ide - takes OpenTelemetry traces, and feeds service graphs to Prometheus when it's installed",
+    "type": "my-sites-ide-plugin",
+    "license": "MIT",
+    "keywords": ["my-sites-ide", "tempo", "tracing", "opentelemetry", "monitoring", "observability"],
+    "authors": [
+        {
+            "name": "Paul Yiend",
+            "email": "yiendos@sbmatrix.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Yiendos\\MySitesIde\\Monitoring\\Tempo\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^8.2",
+        "symfony/console": "^7.3"
+    },
+    "extra": {
+        "my-sites-ide": {
+            "commands": "src/Console",
+            "compose": "docker-compose.yml",
+            "env": ".env",
+            "env-example": "env-example",
+            "services": ["tempo"],
+            "storage": true
+        }
+    }
+}
