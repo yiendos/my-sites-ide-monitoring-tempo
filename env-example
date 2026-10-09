@@ -1,0 +1,6 @@
+# [tempo]
+# Defaults live in this plugin's .env. TEMPO_RETENTION is how long traces are kept, in hours
+# (48h = 2 days). Tempo has no host ports - inside the IDE, send OTLP to tempo:4317 / tempo:4318
+# (or to Alloy, alloy:4318), and Grafana queries tempo:3200.
+# Run `php my-sites-ide monitoring:tempo-start` after changing it.
+#TEMPO_RETENTION=48h
